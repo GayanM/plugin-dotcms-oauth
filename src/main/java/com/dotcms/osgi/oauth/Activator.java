@@ -33,6 +33,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.dotcms.osgi.oauth.OAuth2Servlet.CODE_PARAM_KEY;
 import static com.dotcms.osgi.oauth.util.OAuthPropertyBundle.getProperty;
 
 public class Activator extends GenericBundleActivator {
@@ -203,6 +204,16 @@ public class Activator extends GenericBundleActivator {
             final HttpSession session = request.getSession(false);
             final boolean isAdmin = request.getRequestURI().startsWith("/dotAdmin");
             Result result  = Result.NEXT;
+
+            final boolean isAuthorizedResponse = request.getRequestURI().startsWith("/app/oauthCallback");
+
+            if (isAuthorizedResponse) {
+                Logger.warn(this.getClass(),"Processing Authorization Request:" + request.
+                        getParameter(CODE_PARAM_KEY));
+                response.sendRedirect("/app" + OAUTH_URL + "?" + CODE_PARAM_KEY + "=" +
+                        request.getParameter(CODE_PARAM_KEY));
+                result = Result.SKIP_NO_CHAIN; // needs to stop the filter chain.
+            }
 
             // if we are not logged in, is a admin request and not native by pass, go to login page
             if ( isAdmin && !Activator.this.loginServiceAPI.isLoggedIn(request) &&

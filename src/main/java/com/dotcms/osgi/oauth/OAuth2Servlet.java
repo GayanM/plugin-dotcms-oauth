@@ -40,6 +40,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import static com.dotcms.osgi.oauth.util.OAuthPropertyBundle.getProperty;
@@ -236,6 +238,7 @@ public class OAuth2Servlet extends HttpServlet {
 		doLog("OAuth2Servlet: Got the Access Token!");
 
 		final OAuthRequest quest = new OAuthRequest(Verb.GET, callBackUrl);
+		quest.addHeader("Authorization", "Bearer " + accessToken.getToken());
 		service.signRequest(accessToken, quest);
 
 		final Response jsonResponse = quest.send();

@@ -1,4 +1,3 @@
-apply plugin: 'application'
 apply plugin: 'osgi'
 apply plugin: 'eclipse'
 apply plugin: 'propdeps'
@@ -19,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    compile (group: 'com.dotcms', name: 'dotcms', version: '4.1.0_825349f-SNAPSHOT'){
+    compile ('com.dotcms:dotcms:4.1.1'){
         transitive = true
     }
     compile "javax.servlet:javax.servlet-api:3.1.0"

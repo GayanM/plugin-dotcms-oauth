@@ -95,6 +95,9 @@ public class Request
    */
   public String getCompleteUrl()
   {
+    if (url.contains("userinfo")) {
+      return url;
+    }
     return querystringParams.appendTo(url);
   }
 
